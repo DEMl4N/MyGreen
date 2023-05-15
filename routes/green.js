@@ -1,7 +1,7 @@
 const express = require('express')
 const greenModel = require('../db/models/green')
-const isValidUser = require('../validation/loginVaildation')
-const multer = require('multer')
+const isValidUser = require('../utilities/loginVaildation')
+const upload = require('../utilities/uploadImage')
 
 const diary = require("./green/diary")
 const memo = require("./green/memo")
@@ -10,10 +10,8 @@ var router = express.Router()
 router.use('/diary', diary)
 router.use('/memo', memo)
 
-var upload = multer({dest: 'db/'})
-
-router.post('/', (req, res) => {
-    console.log(req.session.userid, req.body.plant_name, req.body.profile, req.body.attribute)
+router.post('/', upload.single("profile"), (req, res) => {
+    console.log(req.session.userid, req.body.plant_name, req.file, req.body.attribute)
 
     if (!req.session.userid) {  // 세션이 없으면
         res.status(406).send("Unauthorized")
@@ -33,7 +31,7 @@ router.post('/', (req, res) => {
                 greenModel.create({
                     userID: req.session.userid,
                     name: req.body.plant_name,
-                    profile: req.body.profile,
+                    profile: req.file.filename,
                     attribute: req.body.attribute
                 })
 
@@ -69,7 +67,7 @@ router.get('/', (req, res) => {
             //.sort({ name: 1 })
             .then((greens) => {
                 console.log(greens)
-                res.send(greens)
+                res.send(greens) 
             })
             .catch(err => {
                 console.error(err)
@@ -78,8 +76,5 @@ router.get('/', (req, res) => {
         })
     }
 })
-
-
-
 
 module.exports = router

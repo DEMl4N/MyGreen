@@ -13,4 +13,7 @@ const diarySchema = new db.Schema({
     emotion: Number
 });
 
-module.exports = diarySchema
+const diaryModel = db.model('diary', diarySchema)
+
+module.exports.schema = diarySchema
+module.exports.model = diaryModel

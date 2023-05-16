@@ -31,7 +31,7 @@ router.post('/', upload.single("profile"), (req, res) => {
                 greenModel.create({
                     userID: req.session.userid,
                     name: req.body.plant_name,
-                    profile: req.file.filename,
+                    //profile: req.file.filename,
                     attribute: req.body.attribute
                 })
 

@@ -5,11 +5,12 @@ const diarySchema = new db.Schema({
       type: Date,
       required: true
     },
-    images: [Buffer],   // 일기 속 사진들
+    image: String,   // 일기 속 사진
     content: {
         type: String,
         required: true
-    }
+    },
+    emotion: Number
 });
 
 module.exports = diarySchema

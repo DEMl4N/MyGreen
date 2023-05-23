@@ -11,7 +11,10 @@ const greenSchema = new db.Schema({
     required: true
   },
   profile: String,  // uploads/ 에 저장된 파일명
-  memo: memoSchema,
+  memo: {
+    type: String,
+    default: ""
+  },
   diary: [diary.schema],
   attribute: {
     type: db.Schema.Types.Mixed,

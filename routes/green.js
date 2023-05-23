@@ -2,6 +2,8 @@ const express = require('express')
 const greenModel = require('../db/models/green')
 const isValidUser = require('../utilities/loginVaildation')
 const upload = require('../utilities/uploadImage')
+const parseGreen = require('../utilities/parseGreen')
+const getImage = require("../utilities/getImage")
 
 const diary = require("./green/diary")
 const memo = require("./green/memo")
@@ -11,7 +13,7 @@ router.use('/diary', diary)
 router.use('/memo', memo)
 
 router.post('/', upload.single("profile"), (req, res) => {
-    console.log(req.session.userid, req.body.plant_name, req.file, req.body.temperature, req.body.wateringCycle, req.body.color)
+    console.log(req.session.userid, req.body.plant_name, req.file, req.body.temperature, req.body.wateringCycle, req.body.color, req.body.memo)
 
     if (!req.session.userid) {  // 세션이 없으면
         res.status(406).send("Unauthorized")
@@ -32,6 +34,7 @@ router.post('/', upload.single("profile"), (req, res) => {
                     userID: req.session.userid,
                     name: req.body.plant_name,
                     profile: req.file.filename,
+                    memo: req.body.memo,
                     attribute: {
                         temperature: req.body.temperature,
                         wateringCycle: req.body.wateringCycle
@@ -71,7 +74,9 @@ router.get('/', (req, res) => {
             //.sort({ name: 1 })
             .then((greens) => {
                 console.log(greens)
-                res.send(greens) 
+                const parseData = parseGreen(greens)
+
+                res.send(JSON.stringify(parseData))
             })
             .catch(err => {
                 console.error(err)

@@ -14,9 +14,10 @@ const greenSchema = new db.Schema({
   memo: memoSchema,
   diary: [diary.schema],
   attribute: {
-    type: attributeSchema,
+    type: db.Schema.Types.Mixed,
     required: true
-  }
+  },
+  color: String
 });
 
 const green = db.model('green', greenSchema)

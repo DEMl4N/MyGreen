@@ -11,7 +11,7 @@ router.use('/diary', diary)
 router.use('/memo', memo)
 
 router.post('/', upload.single("profile"), (req, res) => {
-    console.log(req.session.userid, req.body.plant_name, req.file, req.body.attribute)
+    console.log(req.session.userid, req.body.plant_name, req.file, req.body.temperature, req.body.wateringCycle, req.body.color)
 
     if (!req.session.userid) {  // 세션이 없으면
         res.status(406).send("Unauthorized")
@@ -31,8 +31,12 @@ router.post('/', upload.single("profile"), (req, res) => {
                 greenModel.create({
                     userID: req.session.userid,
                     name: req.body.plant_name,
-                    //profile: req.file.filename,
-                    attribute: req.body.attribute
+                    profile: req.file.filename,
+                    attribute: {
+                        temperature: req.body.temperature,
+                        wateringCycle: req.body.wateringCycle
+                    },
+                    color: req.body.color
                 })
 
                 res.send("Green Created!")

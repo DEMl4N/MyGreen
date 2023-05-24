@@ -6,7 +6,7 @@ var router = express.Router()
 router.post('/', (req, res) => {
     const { id, password, name, email, birth } = req.body;
 
-    if(!id || !password || !name || !email || !birth){
+    if(!id || !password || !name || !birth){
         res.send("There are spaces missing")
         return
     }
@@ -20,7 +20,6 @@ router.post('/', (req, res) => {
                 id: id, 
                 password: password, 
                 name: name, 
-                email: email, 
                 birth: birth
             })
 

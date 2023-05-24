@@ -4,7 +4,6 @@ const userSchema = new db.Schema({
     id: String,
     password: String,
     name: String,
-    email: String,
     birth: String
 });
 

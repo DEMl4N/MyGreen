@@ -5,12 +5,14 @@ const upload = require('../utilities/uploadImage')
 const parseGreen = require('../utilities/parseGreen')
 const getImage = require("../utilities/getImage")
 
+const register = require("./green/register")
 const diary = require("./green/diary")
 const memo = require("./green/memo")
 var router = express.Router()
 
 router.use('/diary', diary)
 router.use('/memo', memo)
+router.use('/register', register)
 
 router.post('/', upload.single("profile"), (req, res) => {
     console.log(req.session.userid, req.body.plant_name, req.file, req.body.temperature, req.body.wateringCycle, req.body.color, req.body.memo)
@@ -32,6 +34,7 @@ router.post('/', upload.single("profile"), (req, res) => {
             try {
                 greenModel.create({
                     userID: req.session.userid,
+                    id: req.body.id,
                     name: req.body.plant_name,
                     profile: req.file.filename,
                     memo: req.body.memo,

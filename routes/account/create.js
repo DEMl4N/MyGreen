@@ -7,7 +7,7 @@ router.post('/', (req, res) => {
     const { id, password, name, email, birth } = req.body;
 
     if(!id || !password || !name || !birth){
-        res.send("There are spaces missing")
+        res.status(400).send("There are spaces missing")
         return
     }
 

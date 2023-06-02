@@ -1,9 +1,8 @@
 const express = require('express')
-const attributeSchema = require('../db/models/green_attribute')
 const db = require('../db/database')
 
 const router = express.Router()
-const Attribute = db.model('Attribute', attributeSchema)
+const Green = require('./green')
 
 router.post('/', (req, res) => {
   console.log(req.body.lux, req.body.humidity, req.body.temperature)
@@ -12,14 +11,29 @@ router.post('/', (req, res) => {
   })
 })
 
-router.get('/', async (req, res) => {
+// 사용자를 구별하기 위해 userID를 전달받습니다.
+async function getUserByUserID(userID) {
   try {
-    const attributes = await Attribute.findOne({})
-    const { optimalTemperature, wateringCycle } = attributes
-    res.json({ optimalTemperature, wateringCycle })
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error' })
+    // green 모델을 사용하여 userID를 기준으로 사용자를 검색합니다.
+    const user = await Green.findOne({ userID }).exec()
+    return user
+  } catch (error) {
+    throw new Error('검색 중 오류가 발생했습니다: ' + error)
   }
-})
+}
+const userID = 'exampleUserID'
+
+getUserByUserID(userID)
+  .then(user => {
+    if (user) {
+      console.log('사용자를 찾았습니다:', user)
+    } else {
+      console.log('사용자를 찾을 수 없습니다.')
+    }
+  })
+  .catch(error => {
+    console.error(error)
+  })
+
 
 module.exports = router

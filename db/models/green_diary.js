@@ -14,7 +14,10 @@ const diarySchema = new db.Schema({
       type: Date,
       required: true
     },
-    image: String,   // 일기 속 사진
+    image: {
+      type: String,
+      default: ""
+    },   // 일기 속 사진
     content: {
       type: String,
       default: ""

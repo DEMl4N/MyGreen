@@ -6,8 +6,8 @@ const parseDiary = require('../../utilities/parseDiary')
 
 var router = express.Router()
 
-router.get('/', async (req, res) => {
-    console.log(`${req.session.userid} requested diaries of ${req.body.id}`)
+router.get('/:id', async (req, res) => {
+    console.log(`${req.session.userid} requested diaries of ${req.params.id}`)
     if (!req.session.userid) {
         console.log("Not loggined")
         return res.status(400).send("Not loggined")
@@ -21,12 +21,12 @@ router.get('/', async (req, res) => {
         }
     })
 
-    if (!req.body.id) {
+    if (!req.params.id) {
         return res.status(403).send("No ID received")
     }
 
     await diary.model.find({
-        plant_id: req.body.id
+        plant_id: req.params.id
     })
     .then(diaries => {
         const parseData = parseDiary(diaries)

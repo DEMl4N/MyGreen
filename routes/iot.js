@@ -1,25 +1,39 @@
-const express = require('express')
-const attributeSchema = require('../db/models/green_attribute')
-const db = require('../db/database')
+const express = require('express');
+const db = require('../db/database');
 
-const router = express.Router()
-const Attribute = db.model('Attribute', attributeSchema)
+const router = express.Router();
+const Green = require('./green');
+
+const criteria = {
+  humidity: {
+    max: 80,
+    min: 40,
+  },
+  temperature: {
+    max: 30,
+    min: 10,
+  },
+};
 
 router.post('/', (req, res) => {
-  console.log(req.body.lux, req.body.humidity, req.body.temperature)
+  const { id, status, humidity, temperature } = req.body;
+
+  console.log(id, status, humidity, temperature);
   res.json({
-    status: "OK"
-  })
-})
+    status: 'OK',
+  });
 
-router.get('/', async (req, res) => {
-  try {
-    const attributes = await Attribute.findOne({})
-    const { optimalTemperature, wateringCycle } = attributes
-    res.json({ optimalTemperature, wateringCycle })
-  } catch (err) {
-    res.status(500).json({ error: 'Internal Server Error' })
+  if (humidity > criteria.humidity.max) {
+    console.log('Warning: 습도가 기준치를 초과하였습니다.');
+  } else if (humidity < criteria.humidity.min) {
+    console.log('Warning: 습도가 기준치 미달하였습니다.');
   }
-})
 
-module.exports = router
+  if (temperature > criteria.temperature.max) {
+    console.log('Warning: 온도가 기준치를 초과하였습니다.');
+  } else if (temperature < criteria.temperature.min) {
+    console.log('Warning: 온도가 기준치 미달하였습니다.');
+  }
+});
+
+module.exports = router;

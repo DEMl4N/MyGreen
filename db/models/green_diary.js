@@ -11,7 +11,7 @@ const diarySchema = new db.Schema({
      default: ""
     },
     date: {
-      type: String,
+      type: date,
       required: true
     },
     image: {

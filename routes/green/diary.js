@@ -93,7 +93,7 @@ router.delete('/', async (req, res) => {
         }
     })
     
-    await diary.model.deleteOne({
+    await diary.model.deleteMany({
         id: req.body.id,
         date: req.body.date
     })

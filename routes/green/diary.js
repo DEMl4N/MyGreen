@@ -6,8 +6,8 @@ const parseDiary = require('../../utilities/parseDiary')
 
 var router = express.Router()
 
-router.get('/', async (req, res) => {
-    console.log(`${req.session.userid} requested diaries of ${req.body.id}`)
+router.get('/:id', async (req, res) => {
+    console.log(`${req.session.userid} requested diaries of ${req.params.id}`)
     if (!req.session.userid) {
         console.log("Not loggined")
         return res.status(400).send("Not loggined")
@@ -21,12 +21,12 @@ router.get('/', async (req, res) => {
         }
     })
 
-    if (!req.body.id) {
+    if (!req.params.id) {
         return res.status(403).send("No ID received")
     }
 
     await diary.model.find({
-        plant_id: req.body.id
+        plant_id: req.params.id
     })
     .then(diaries => {
         const parseData = parseDiary(diaries)
@@ -74,6 +74,35 @@ router.post('/', upload.single("image"), async (req, res) => {
     .catch(exception => {
         console.error(exception)
         return res.status(405).send("Error occured while writing diary")
+    })
+})
+
+router.delete('/', async (req, res) => {
+    cosnole.log(`${req.session.userid}`)
+
+    if (!req.session.userid) {
+        console.log("Not loginned")
+        return res.status(406).send("Not Loginned")
+    }
+
+    isValidUser(req.session.userid)
+    .then(isValid => {
+        if (!isValid) {
+            console.log(`${req.session.userid} not found`)
+            return res.status(407).send("Not valid User")
+        }
+    })
+    
+    await diary.model.deleteMany({
+        id: req.body.id,
+        date: req.body.date
+    })
+    .catch(exception => {
+        return res.status(400).send("Error while deleting")
+    })
+
+    return res.json({
+        status: "OK"
     })
 })
 

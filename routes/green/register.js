@@ -4,16 +4,12 @@ const unregistered = require('../../db/models/unregistered_green')
 var router = express.Router()
 
 async function isRegisterable(greenID) {
-    unregistered.findOne({
+    res = await unregistered.findOne({
         id: greenID
     })
-    .then(result => {
-        if (result) {
-            return true
-        }
-        
-        return false
-    })
+
+    console.log(res)
+    return res
 }
 
 async function deleteUnregistered(greenID) {
@@ -26,7 +22,7 @@ router.get('/:greenHash', (req, res) => {
     isRegisterable(req.params.greenHash)
     .then(result => {
         if (result) {
-            deleteUnregistered(req.params.greenHash)
+            //deleteUnregistered(req.params.greenHash)
             res.json({
                 status: "OK",
                 id: req.params.greenHash

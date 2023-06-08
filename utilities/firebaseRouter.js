@@ -1,6 +1,6 @@
 const express = require('express');
 const admin = require('firebase-admin');
-const serviceAccount = require('C:\\Users\\micha\\Desktop\\serviceAccountKey.json');
+const serviceAccount = require('../serviceAccount/serviceAccountKey.json');
 
 const router = express.Router();
 const Green = require('../db/models/green');

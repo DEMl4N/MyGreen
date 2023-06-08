@@ -1,7 +1,7 @@
 const express = require('express');
 const db = require('../db/database');
 const admin = require('firebase-admin');
-const serviceAccount = require('C:\\Users\\micha\\Desktop\\serviceAccountKey.json');
+const serviceAccount = require('../serviceAccount/serviceAccountKey.json');
 const app = require('../app');
 
 

@@ -77,4 +77,33 @@ router.post('/', upload.single("image"), async (req, res) => {
     })
 })
 
+router.delete('/', async (req, res) => {
+    cosnole.log(`${req.session.userid}`)
+
+    if (!req.session.userid) {
+        console.log("Not loginned")
+        return res.status(406).send("Not Loginned")
+    }
+
+    isValidUser(req.session.userid)
+    .then(isValid => {
+        if (!isValid) {
+            console.log(`${req.session.userid} not found`)
+            return res.status(407).send("Not valid User")
+        }
+    })
+    
+    await diary.model.deleteOne({
+        id: req.body.id,
+        date: req.body.date
+    })
+    .catch(exception => {
+        return res.status(400).send("Error while deleting")
+    })
+
+    return res.json({
+        status: "OK"
+    })
+})
+
 module.exports = router

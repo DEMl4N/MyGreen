@@ -3,18 +3,13 @@ const db = require('../db/database');
 const admin = require('firebase-admin');
 const serviceAccount = require('../serviceAccount/serviceAccountKey.json');
 const app = require('../app');
-
-
+const router = express.Router();
+const greenModel = require('../db/models/green');
+const userModel = require('../db/models/user')
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: 'your-storage-bucket.appspot.com'
+  credential: admin.credential.cert(serviceAccount)
 });
-
-const bucket = admin.storage().bucket();
-
-const router = express.Router();
-const Green = require('./green');
 
 router.post('/', async (req, res) => {
   const { id, status } = req.body;
@@ -25,39 +20,63 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const idExists = await Green.compareId(id);
-    if (idExists) {
-      res.status(200).json({ message: 'ID exists in the database' });
-    } else {
-      res.status(200).json({ message: 'ID does not exist in the database' });
+    const greenDoc = await greenModel.findOne({
+      id: id
+    });
+
+    await greenModel.updateMany(
+      { id: id },
+      { $set: { status: status } }
+    )
+
+    if (status === "happy" || status === "sleepy") {
+      return res.json({
+        status: "OK"
+      })
     }
 
-    // Firebase Storage에 status 데이터 업로드
-    const remoteFilePath = `status/${id}.json`;
-    const fileContents = JSON.stringify({ status });
+    const userDoc = await userModel.findOne({
+      id: greenDoc.userID
+    })
 
-    const file = bucket.file(remoteFilePath);
-    const stream = file.createWriteStream({
-      metadata: {
-        contentType: 'application/json'
-      }
-    });
+    const token = userDoc.deviceToken
 
-    stream.on('error', (error) => {
-      console.error('Error uploading file:', error);
-      res.status(500).json({ error: 'Failed to upload status data' });
-    });
+    let message = {
+      notification: {
+        title: `${greenDoc.name} 화분 상태를 확인하세요`,
+        body: `${status}`,
+      },
+      token: token
+    }
 
-    stream.on('finish', () => {
-      console.log('Status data uploaded successfully.');
-      // res.status(200).json({ message: 'Status data uploaded successfully' });
-    });
+    admin.messaging()
+    .send(message)
+    .then(response => {
+      console.log("GOOoOOD")
+    })
+    .catch(err => {
+      console.err(err)
+    })
 
-    stream.end(fileContents);
+    return res.json({
+      status: "OK"
+    })
+
   } catch (error) {
-    res.status(500).json({ error: 'Failed to compare id' });
+    console.log("IOIII")
+    return res.status(400).send("T.T")
   }
 });
 
+router.get('/', async (req, res) => {
+    const greenDoc = await greenModel.findOne({
+      id: req.body.id
+    })
+
+    res.json({
+      temperature: greenDoc.temperature,
+      wateringCycle: greenDoc.wateringCycle
+    })
+})
 
 module.exports = router;

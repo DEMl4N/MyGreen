@@ -22,7 +22,11 @@ const greenSchema = new db.Schema({
     type: db.Schema.Types.Mixed,
     required: true
   },
-  color: String
+  color: String,
+  status: {
+    type: String,
+    default: "happy"
+  }
 });
 
 const green = db.model('green', greenSchema)

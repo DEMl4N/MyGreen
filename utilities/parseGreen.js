@@ -5,6 +5,9 @@ function parse(results) {
     const data = []
     results.forEach(doc => {
         console.log(doc)
+        const filteredStatus = 
+        (doc.status === "sleepy" || doc.status === "savory") ? "happy" : doc.status
+
         data.push({
             plant_name: doc.name,
             id: doc.id,
@@ -12,7 +15,8 @@ function parse(results) {
             temperature: doc.attribute.temperature,
             wateringCycle: doc.attribute.wateringCycle,
             color: doc.color,
-            memo: doc.memo
+            memo: doc.memo,
+            status: filteredStatus
         })
     });
 

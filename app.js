@@ -1,14 +1,15 @@
 const express = require('express');
 const session = require('express-session')
-
 const index = require('./routes/index')
 const test = require('./routes/test')
 const account = require('./routes/account')
 const green = require('./routes/green')
 const iot = require('./routes/iot');
+const firebaseRouter = require('./utilities/firebaseRouter');
 
 const app = express();
 
+app.use('/firebase', firebaseRouter);
 app.use(express.json({ limit: "200mb" }))        // 413 에러 해결
 app.use(express.urlencoded({ limit: "200mb", extended: true }))  // 413 에러 해결
 app.use(session({

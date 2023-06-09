@@ -19,6 +19,8 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'id and status are required' });
   }
 
+  console.log(`${req.body.id}, ${req.body.status}`)
+
   try {
     const greenDoc = await greenModel.findOne({
       id: id
@@ -43,8 +45,8 @@ router.post('/', async (req, res) => {
 
     let message = {
       notification: {
-        title: `${greenDoc.name} 화분 상태를 확인하세요`,
-        body: `${status}`,
+        title: `Mygreen`,
+        body: `${greenDoc.name} is ${status} now!`,
       },
       token: token
     }

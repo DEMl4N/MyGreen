@@ -7,6 +7,7 @@ function parse(results) {
         console.log(doc)
         data.push({
             plant_name: doc.plant_name,
+            writer: doc.writer,
             title: doc.title,
             date: doc.date,
             emotion: doc.emotion,

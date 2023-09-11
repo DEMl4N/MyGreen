@@ -5,7 +5,7 @@ const serviceAccount = require('../serviceAccount/serviceAccountKey.json');
 const app = require('../app');
 const router = express.Router();
 const greenModel = require('../db/models/green');
-const userModel = require('../db/models/user')
+const user = require('../db/models/user')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -37,7 +37,7 @@ router.post('/', async (req, res) => {
       })
     }
 
-    const userDoc = await userModel.findOne({
+    const userDoc = await user.model.findOne({
       id: greenDoc.userID
     })
 

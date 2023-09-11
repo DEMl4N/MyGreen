@@ -4,33 +4,45 @@ const user = require('../../db/models/user')
 var router = express.Router()
 
 router.post('/', (req, res) => {
-    const { id, password, name, email, birth } = req.body;
+    const { id, password, email, birth, nickname } = req.body;
 
-    if(!id || !password || !name || !birth){
+    if(!id || !password || !nickname || !birth){
         res.status(400).send("There are spaces missing")
         return
     }
 
-    user.findOne({ id: id })
+    user.model.findOne({ id: id })
     .then((foundUser) => {
         if (foundUser) { // 중복 아이디 체크
-            res.status(414).send('중복된 아이디입니다.')
-        } else {
-            user.create({ 
-                id: id, 
-                password: password, 
-                name: name, 
-                birth: birth
-            })
-
-            console.log(id, password, name, birth, email)
-            res.send("Account Created!" + id)
+            return res.status(414).send('중복된 아이디입니다.')
         }
     })
     .catch((err) => {
         res.status(500).send(err);
     });
+
+    user.model.findOne({ nickname: nickname })
+    .then((existsNickname) => {
+        if (existsNickname) {
+            return res.status(444).send('중복된 닉네임입니다.')
+        }
+    })
+    .catch((err) => {
+        res.status(501).send(err);
+    });
+    
+    user.model.create({ 
+        id: id, 
+        password: password, 
+        birth: birth,
+        nickname: nickname
+    })
+    .catch((err) => {
+        res.status(502).send(err);
+    });
+
+    console.log(id, password, birth, nickname)
+    res.send("Account Created!" + id)
 })
 
-    
 module.exports = router

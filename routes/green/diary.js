@@ -1,5 +1,6 @@
 const express = require('express')
 const diary = require('../../db/models/green_diary')
+const user = require('../../db/models/user')
 const upload = require("../../utilities/uploadImage")
 const isValidUser = require('../../utilities/loginVaildation')
 const parseDiary = require('../../utilities/parseDiary')
@@ -59,8 +60,13 @@ router.post('/', upload.single("image"), async (req, res) => {
 
     filename = (req.file === undefined) ? "" : req.file.filename
 
+    const userDoc = user.model.findOne({
+        id: req.session.userid
+    })
+
     diary.model.create({
         plant_id: req.body.id,
+        writer: userDoc,
         plant_name: req.body.plant_name,
         title: req.body.title,
         date: req.body.date,

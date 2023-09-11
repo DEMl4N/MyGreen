@@ -1,8 +1,13 @@
 const db = require('../database')
+const comment = require('./comment')
 
 const diarySchema = new db.Schema({
     plant_id: {
       type: String,
+      required: true
+    },
+    writer: {
+      type: user.schema,
       required: true
     },
     plant_name: String,
@@ -22,7 +27,16 @@ const diarySchema = new db.Schema({
       type: String,
       default: ""
     },
-    emotion: String
+    emotion: String,
+    isPublic: {
+      type: Boolean,
+      default: true
+    },
+    comments: [comment.schema],
+    numberOfComments: {
+      type: Number,
+      default: 0
+    }
 });
 
 const diaryModel = db.model('diary', diarySchema)

@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../../db/models/user');
+const user = require('../../db/models/user');
 const asyncHandler = require('express-async-handler');
 const sendEmail = require('./sendEmail');
 
@@ -14,7 +14,7 @@ function generateRandomPassword() {
 router.post("/reset-password", asyncHandler(async (req, res, next) => {
   const { email } = req.body;
   const randomPassword = generateRandomPassword();
-  await User.findOneAndUpdate({ email }, {
+  await user.model.findOneAndUpdate({ email }, {
     password: getHash(randomPassword),
   });
   await sendEmail(email, "Password Reset", randomPassword);

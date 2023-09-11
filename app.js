@@ -5,6 +5,7 @@ const test = require('./routes/test')
 const account = require('./routes/account')
 const green = require('./routes/green')
 const iot = require('./routes/iot');
+const community = require('./routes/community')
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(session({
 app.use('/', index)
 app.use('/account', account)
 app.use('/green', green)
+app.use('/community', community)
 //
 
 // for IOT vase

@@ -5,9 +5,11 @@ const userSchema = new db.Schema({
     password: String,
     name: String,
     birth: String,
-    deviceToken: String
+    deviceToken: String,
+    nickname: String
 });
 
-const user = db.model('user', userSchema)
+const userModel = db.model('user', userSchema)
 
-module.exports = user
+module.exports.schema = userSchema
+module.exports.model = userModel

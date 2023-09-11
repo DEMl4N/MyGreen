@@ -1,5 +1,5 @@
 const express = require('express')
-const userModel = require('../../db/models/user')
+const user = require('../../db/models/user')
 
 var router = express.Router()
 router.post('/', async (req, res) => {
@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
 
     const login = async (id, password) => {
         try {
-          const status = await userModel.findOne({ 
+          const status = await user.model.findOne({ 
             id: id,
             password: password
         })
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
         }
     })
 
-    await userModel.updateMany(
+    await user.model.updateMany(
         { id: req.body.id },
         { $set: { deviceToken: req.body.token } }
     )

@@ -1,8 +1,8 @@
-const userModel = require('../db/models/user')
+const user = require('../db/models/user')
 
 async function isValidUser (userID) {
     try {
-        const status = await userModel.findOne({ 
+        const status = await user.model.findOne({ 
             id: userID
         })
         .exec();

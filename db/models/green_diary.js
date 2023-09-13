@@ -1,5 +1,6 @@
 const db = require('../database')
 const comment = require('./comment')
+const user = require('./user')
 
 const diarySchema = new db.Schema({
     plant_id: {

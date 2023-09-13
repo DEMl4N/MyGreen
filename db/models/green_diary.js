@@ -17,7 +17,7 @@ const diarySchema = new db.Schema({
      default: ""
     },
     date: {
-      type: Date,
+      type: String,
       required: true
     },
     image: {
@@ -33,7 +33,6 @@ const diarySchema = new db.Schema({
       type: Boolean,
       default: true
     },
-    comments: [comment.schema],
     numberOfComments: {
       type: Number,
       default: 0

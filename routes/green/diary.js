@@ -39,8 +39,8 @@ router.get('/:id', async (req, res) => {
     })
 })
 
-router.post('/', upload.single("image"), async (req, res) => {
-    console.log(req.body.id, req.body.title, req.body.date, req.body.content, req.body.emotion)
+router.post('/:id', upload.single("image"), async (req, res) => {
+    console.log(req.params.id, req.body.title, req.body.date, req.body.content, req.body.emotion)
     if (!req.session.userid) {
         console.log("Not loggined")
         return res.status(400).send("Not loggined")
@@ -54,25 +54,25 @@ router.post('/', upload.single("image"), async (req, res) => {
         }
     })
 
-    if (!req.body.id || !req.body.title || !req.body.date || !req.body.content || !req.body.emotion) {
+    if (!req.params.id || !req.body.title || !req.body.date || !req.body.content || !req.body.emotion) {
         return res.status(400).send("Something's Missing")
     }
 
-    filename = (req.file === undefined) ? "" : req.file.filename
+    const filename = (req.file === undefined) ? "" : req.file.filename
 
     const userDoc = user.model.findOne({
         id: req.session.userid
     })
 
     diary.model.create({
-        plant_id: req.body.id,
+        plant_id: req.params.id,
         writer: userDoc,
         plant_name: req.body.plant_name,
         title: req.body.title,
         date: req.body.date,
         content: req.body.content,
         emotion: req.body.emotion,
-        image: filename
+        image: filename 
     })
     .then(result => {
         return res.send("Good")
@@ -83,7 +83,7 @@ router.post('/', upload.single("image"), async (req, res) => {
     })
 })
 
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     cosnole.log(`${req.session.userid}`)
 
     if (!req.session.userid) {
@@ -100,7 +100,7 @@ router.delete('/', async (req, res) => {
     })
     
     await diary.model.deleteMany({
-        id: req.body.id,
+        id: req.params.id,
         date: req.body.date
     })
     .catch(exception => {

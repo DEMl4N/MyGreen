@@ -6,7 +6,7 @@ var router = express.Router()
 router.post('/', (req, res) => {
     const { id, password, email, birth, nickname } = req.body;
 
-    if(!id || !password || !nickname || !birth){
+    if(!id || !password || !nickname) {
         res.status(400).send("There are spaces missing")
         return
     }
@@ -34,14 +34,13 @@ router.post('/', (req, res) => {
     user.model.create({ 
         id: id, 
         password: password, 
-        birth: birth,
         nickname: nickname
     })
     .catch((err) => {
         res.status(502).send(err);
     });
 
-    console.log(id, password, birth, nickname)
+    console.log(id, password, nickname)
     res.send("Account Created!" + id)
 })
 

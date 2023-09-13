@@ -3,7 +3,8 @@ const user = require('../../db/models/user')
 
 var router = express.Router()
 router.post('/', async (req, res) => {
-    if (!req.body.id || !req.body.password || !req.body.token){
+    if (!req.body.id || !req.body.password) { //|| !req.body.token){
+        console.log("Login failed")
         return res.status(400).send("Missing id or password or token")
     }
 

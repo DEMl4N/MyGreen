@@ -12,10 +12,7 @@ function parse(results) {
             plant_name: doc.name,
             id: doc.id,
             profile: getImage(doc.profile),
-            temperature: doc.attribute.temperature,
-            wateringCycle: doc.attribute.wateringCycle,
             color: doc.color,
-            memo: doc.memo,
             status: filteredStatus
         })
     });

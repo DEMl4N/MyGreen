@@ -1,6 +1,5 @@
 const diary = require('../db/models/green_diary')
 const user = require('../db/models/user')
-const getImage = require('./getImage')
 
 function parse(results) {
     const data = []
@@ -18,13 +17,8 @@ function parse(results) {
         .then(() => {
             data.push({
                 _id: doc._id,
-                plant_name: doc.plant_name,
-                writer: writer,
                 title: doc.title,
-                date: doc.date,
-                emotion: doc.emotion,
-                content: doc.content,
-                image: getImage(doc.image),
+                writer: writer,
             })
         })
     });

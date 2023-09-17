@@ -60,13 +60,13 @@ router.post('/:id', upload.single("image"), async (req, res) => {
 
     const filename = (req.file === undefined) ? "" : req.file.filename
 
-    const userDoc = user.model.findOne({
+    const userDoc = await user.model.findOne({
         id: req.session.userid
     })
 
     diary.model.create({
         plant_id: req.params.id,
-        writer: userDoc,
+        writer: userDoc._id,
         plant_name: req.body.plant_name,
         title: req.body.title,
         date: req.body.date,

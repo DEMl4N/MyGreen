@@ -7,8 +7,8 @@ const diarySchema = new db.Schema({
       type: String,
       required: true
     },
-    writer: {
-      type: user.schema,
+    writer: {   // userID
+      type: String,
       required: true
     },
     plant_name: String,

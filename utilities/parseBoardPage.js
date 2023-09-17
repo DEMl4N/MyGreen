@@ -6,19 +6,14 @@ function parse(results) {
     results.forEach(doc => {
         console.log(doc)
 
-        const writer = ""
-
-        user.model.findOne({
-            _id: doc.writer
+        diary.model.findOne({
+            writer: doc.writer
         })
-        .then(userResult => {
-            writer = userResult.nickname
-        })
-        .then(() => {
+        .then(userResult  => {
             data.push({
                 _id: doc._id,
                 title: doc.title,
-                writer: writer,
+                writer: userResult.nickname,
             })
         })
     });

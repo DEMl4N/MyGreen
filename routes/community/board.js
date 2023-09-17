@@ -41,7 +41,7 @@ router.get('/:page', async (req, res) => {
             isPublic: true
         }).limit(10)
 
-        return res.send(JSON.stringify(parseBoardPage(pageDiaries)))
+        return res.send(JSON.stringify(await parseBoardPage(pageDiaries)))
     }
     
     let latterDiaries = await diary.model.find({

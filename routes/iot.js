@@ -43,6 +43,8 @@ router.post('/', async (req, res) => {
 
     const token = userDoc.deviceToken
 
+    console.log(token, greenDoc.userID)
+
     let message = {
       notification: {
         title: `Mygreen`,
@@ -57,7 +59,7 @@ router.post('/', async (req, res) => {
       console.log("GOOoOOD")
     })
     .catch(err => {
-      console.err(err)
+      console.error(err)
     })
 
     return res.json({

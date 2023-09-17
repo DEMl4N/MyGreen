@@ -30,8 +30,9 @@ router.get('/:id', async (req, res) => {
     await diary.model.find({
         plant_id: req.params.id
     })
-    .then(diaries => {
-        const parseData = parseDiary(diaries)
+    .then(async diaries => {
+        const parseData = await parseDiary(diaries)
+        console.log(parseData)
         return res.send(JSON.stringify(parseData))
     })
     .catch(exception => {

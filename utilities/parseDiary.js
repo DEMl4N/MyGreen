@@ -4,26 +4,24 @@ const getImage = require('./getImage')
 
 async function parse(results) {
     const data = []
-    results.forEach(doc => {
-        console.log(doc)
 
-        diary.model.findOne({
-            writer: doc.writer
+    for (const doc of results) {
+        const userResult = await user.model.findOne({
+            id: doc.writer
         })
-        .then(userResult  => {
-            data.push({
-                _id: doc._id,
-                plant_name: doc.plant_name,
-                writer: userResult,
-                title: doc.title,
-                date: doc.date,
-                emotion: doc.emotion,
-                content: doc.content,
-                image: getImage(doc.image),
-            })
+        
+        console.log(userResult)
+        data.push({
+            _id: doc._id,
+            plant_name: doc.plant_name,
+            writer: userResult.nickname,
+            title: doc.title,
+            date: doc.date,
+            emotion: doc.emotion,
+            content: doc.content,
+            // image: getImage(doc.image),
         })
-    });
-
+    }
     return data
 }
 

@@ -6,6 +6,7 @@ function parse(results) {
     results.forEach(doc => {
         console.log(doc)
         data.push({
+            _id: doc._id,
             plant_name: doc.plant_name,
             writer: doc.writer,
             title: doc.title,

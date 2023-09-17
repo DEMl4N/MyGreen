@@ -1,6 +1,6 @@
 const comment = require('../db/models/comment')
 
-function parse(diary_id) {
+function parse(results) {
     const data = []
     results.forEach(doc => {
         console.log(doc)

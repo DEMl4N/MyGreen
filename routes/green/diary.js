@@ -64,14 +64,17 @@ router.post('/:id', upload.single("image"), async (req, res) => {
         id: req.session.userid
     })
 
+    console.log(`${userDoc.id}`)
+
     diary.model.create({
         plant_id: req.params.id,
-        writer: userDoc._id,
+        writer: userDoc.id,
         plant_name: req.body.plant_name,
         title: req.body.title,
         date: req.body.date,
         content: req.body.content,
         emotion: req.body.emotion,
+        isPublic: req.body.isPublic,
         image: filename 
     })
     .then(result => {

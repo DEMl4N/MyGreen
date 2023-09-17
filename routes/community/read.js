@@ -15,6 +15,9 @@ router.get('/:diary_id', async (req, res) => {
         _id: req.params.diary_id
     })
     .then(diary => {
+        console.log(diary)
+        console.log(parseComment(comments))
+
         res.json({
             writer: diary.writer,
             plant_name: diary.plant_name,
@@ -25,7 +28,7 @@ router.get('/:diary_id', async (req, res) => {
         })
     })
     .catch(err => {
-        res.status(401).send("err while requesting a diary")
+        res.status(401).send(err)
     })
 })
 

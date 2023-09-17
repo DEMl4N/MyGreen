@@ -35,7 +35,8 @@ router.get('/:diary_id', async (req, res) => {
 router.post('/:diary_id', async (req, res) => {
     await comment.model.create({
         plant: req.params.diary_id,
-        writer: req.session.userid,
+        // writer: req.session.userid,
+        writer: req.body.userid,
         content: req.body.content
     })
     .catch(err => {

@@ -8,19 +8,20 @@ const parseDiary = require('../../utilities/parseDiary')
 var router = express.Router()
 
 router.get('/:id', async (req, res) => {
-    console.log(`${req.session.userid} requested diaries of ${req.params.id}`)
-    if (!req.session.userid) {
-        console.log("Not loggined")
-        return res.status(400).send("Not loggined")
-    }
+    // console.log(`${req.session.userid} requested diaries of ${req.params.id}`)
+    // console.log(`${req.session.userid} requested diaries of ${req.params.id}`)
+    // if (!req.session.userid) {
+    //     console.log("Not loggined")
+    //     return res.status(400).send("Not loggined")
+    // }
 
-    await isValidUser(req.session.userid)
-    .then( result => {
-        if (!result) {
-            console.log("Not valid login")
-            return res.status(401).send("Not valid login")
-        }
-    })
+    // await isValidUser(req.session.userid)
+    // .then( result => {
+    //     if (!result) {
+    //         console.log("Not valid login")
+    //         return res.status(401).send("Not valid login")
+    //     }
+    // })
 
     if (!req.params.id) {
         return res.status(403).send("No ID received")
@@ -41,12 +42,15 @@ router.get('/:id', async (req, res) => {
 
 router.post('/:id', upload.single("image"), async (req, res) => {
     console.log(req.params.id, req.body.title, req.body.date, req.body.content, req.body.emotion)
-    if (!req.session.userid) {
+    // if (!req.session.userid) {
+        
+    if (!req.body.userid) {
         console.log("Not loggined")
         return res.status(400).send("Not loggined")
     }
     
-    await isValidUser(req.session.userid)
+    // await isValidUser(req.session.userid)
+    await isValidUser(req.body.userid)
     .then( result => {
         if (!result) {
             console.log("Not valid login")

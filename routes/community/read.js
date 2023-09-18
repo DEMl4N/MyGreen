@@ -20,8 +20,10 @@ router.get('/:diary_id', async (req, res) => {
 
         res.json({
             writer: diary.writer,
+            title: diary.title,
             plant_name: diary.plant_name,
             content: diary.content,
+            date: diary.date,
             image: getImage(diary.image),
             emotion: diary.emotion,
             comments: parseComment(comments)
@@ -39,11 +41,13 @@ router.post('/:diary_id', async (req, res) => {
         writer: req.body.userid,
         content: req.body.content
     })
-    .catch(err => {
-        res.status(400).send("err while writing a comment")
+    .then(() => {
+        return res.send("Comment written")
     })
-
-    res.send("Comment written")
+    .catch(err => {
+        console.log(err)
+        return res.status(400).send("err while writing a comment")
+    })
 })
 
 module.exports = router

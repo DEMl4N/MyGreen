@@ -7,7 +7,7 @@ const commentSchema = new db.Schema({
         required: true,
     },
     writer: {
-        type: user.schema,
+        type: String,   //userid
         required: true
     },
     content: {

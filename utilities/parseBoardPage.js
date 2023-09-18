@@ -1,5 +1,6 @@
 const diary = require('../db/models/green_diary')
 const user = require('../db/models/user')
+const getImage = require('./getImage')
 
 async function parse(results) {
     const data = []
@@ -12,6 +13,9 @@ async function parse(results) {
                 _id: doc._id,
                 title: doc.title,
                 writer: userResult.nickname,
+                date: doc.date,
+                content: doc.content,
+                image: getImage(doc.image)
             })
         })
     }

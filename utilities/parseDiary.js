@@ -19,7 +19,7 @@ async function parse(results) {
             date: doc.date,
             emotion: doc.emotion,
             content: doc.content,
-            // image: getImage(doc.image),
+            image: getImage(doc.image),
         })
     }
     return data

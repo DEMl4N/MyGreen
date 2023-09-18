@@ -41,7 +41,10 @@ router.get('/:page', async (req, res) => {
             isPublic: true
         }).limit(10)
 
-        return res.send(JSON.stringify(await parseBoardPage(pageDiaries)))
+        return res.json({
+            posts: await parseBoardPage(pageDiaries),
+            totalPages: totalPages
+        })
     }
     
     let latterDiaries = await diary.model.find({
@@ -56,7 +59,10 @@ router.get('/:page', async (req, res) => {
         _id: { $gt: lastID }
     }).limit(10)
 
-    return res.send(JSON.stringify(parseBoardPage(pageDiaries)))
+    return res.json({
+        posts: await parseBoardPage(pageDiaries),
+        totalPages: totalPages
+    })
 })
 
 module.exports = router
